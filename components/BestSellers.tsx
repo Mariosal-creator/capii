@@ -66,6 +66,9 @@ export default function BestSellers() {
   const [ok, setOk] = useState<boolean[]>(() => ITEMS.map(() => true));
   const [openIdx, setOpenIdx] = useState<number | null>(null); // índice del modal abierto
 
+  // (1) NUEVO: evita cierre inmediato del modal por el mismo tap que lo abre
+  const [canCloseBackdrop, setCanCloseBackdrop] = useState(false);
+
   const initials = (name: string) =>
     name
       .split(" ")
@@ -87,6 +90,17 @@ export default function BestSellers() {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
+  }, [openIdx]);
+
+  // (2) NUEVO: pequeña ventana de 150 ms antes de permitir cerrar con click en el overlay
+  useEffect(() => {
+    if (openIdx === null) {
+      setCanCloseBackdrop(false);
+      return;
+    }
+    setCanCloseBackdrop(false);
+    const t = window.setTimeout(() => setCanCloseBackdrop(true), 150);
+    return () => window.clearTimeout(t);
   }, [openIdx]);
 
   return (
@@ -112,12 +126,11 @@ export default function BestSellers() {
                       src={p.src}
                       alt={p.title}
                       fill
-                      sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                      sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
                       className="img"
                       onError={() =>
                         setOk((arr) => arr.map((v, idx) => (idx === i ? false : v)))
                       }
-                      priority={i < 2} // carga rápida de los primeros ítems en móvil
                     />
                   ) : (
                     <div className={`ph ph-${(i % 3) + 1}`} aria-hidden="true">
@@ -182,7 +195,9 @@ export default function BestSellers() {
           role="dialog"
           aria-modal="true"
           aria-labelledby={`modal-title-${openIdx}`}
-          onClick={() => setOpenIdx(null)} // click en overlay cierra
+          onClick={() => {
+            if (canCloseBackdrop) setOpenIdx(null); // (3) NUEVO: respeta ventana anti-cierre-inmediato
+          }}
         >
           <div
             className="dialog"
@@ -233,18 +248,13 @@ export default function BestSellers() {
           --muted: #a1a1aa;
           background: linear-gradient(180deg, #000 0%, #0b0b0b 100%);
           color: #fff;
-          padding: clamp(32px, 6vw, 64px) 0;
+          padding: clamp(40px, 6vw, 64px) 0;
           font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
         }
         .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-        @media (max-width: 768px) {
-          .wrap { padding: 0 16px; }
-        }
-
-        .ttl { margin: 0 0 20px; font-size: clamp(20px, 4.2vw, 34px); font-weight: 800; letter-spacing: .2px; }
+        .ttl { margin: 0 0 20px; font-size: clamp(22px, 4.2vw, 34px); font-weight: 800; letter-spacing: .2px; }
         .ttl span { color: var(--orange); }
 
-        /* Grid responsiva: 1 → 2 → 3 columnas */
         .grid {
           display: grid;
           gap: clamp(12px, 2.4vw, 20px);
@@ -271,9 +281,6 @@ export default function BestSellers() {
           grid-template-rows: auto 1fr;
         }
         .card:hover { transform: translateY(-3px); border-color: #262626; box-shadow: 0 16px 40px rgba(0,0,0,.22); }
-        @media (max-width: 480px) {
-          .card { border-radius: 12px; }
-        }
 
         .mediaBtn {
           padding: 0;
@@ -283,13 +290,9 @@ export default function BestSellers() {
           display: block;
           width: 100%;
         }
-        @media (pointer: coarse) {
-          .mediaBtn { cursor: pointer; } /* mejor feedback en touch */
-        }
-
         .media {
           position: relative;
-          aspect-ratio: 4 / 3;        /* mantiene proporción en todas las pantallas */
+          aspect-ratio: 4 / 3;
           background: #0f0f0f;
         }
         .img { object-fit: cover; }
@@ -299,7 +302,7 @@ export default function BestSellers() {
         .ph-1 { background: radial-gradient(800px 300px at 20% 20%, rgba(255,122,0,.3), transparent 60%), #0f0f0f; }
         .ph-2 { background: radial-gradient(800px 300px at 80% 20%, rgba(255,122,0,.28), transparent 60%), #0f0f0f; }
         .ph-3 { background: radial-gradient(900px 340px at 50% 80%, rgba(255,122,0,.24), transparent 60%), #0f0f0f; }
-        .ph-txt { font-weight: 800; font-size: clamp(18px, 6vw, 40px); color: rgba(255,255,255,.8); letter-spacing: .5px; }
+        .ph-txt { font-weight: 800; font-size: clamp(22px, 6vw, 40px); color: rgba(255,255,255,.8); letter-spacing: .5px; }
 
         .badge {
           position: absolute;
@@ -334,10 +337,11 @@ export default function BestSellers() {
         .cart { display: inline-block; color: var(--orange); }
         .muted { color: var(--muted); }
 
+        /* Botón Info -> WhatsApp */
         .btn {
           justify-self: start;
           display: inline-block;
-          padding: 10px 16px;                 /* mayor área táctil */
+          padding: 8px 14px;
           border-radius: 12px;
           border: 1px solid rgba(234,88,12,.6);
           background: var(--orange);
@@ -349,8 +353,10 @@ export default function BestSellers() {
         }
         .btn:hover { filter: brightness(1.05); }
         .btn:active { transform: translateY(1px); }
-        @media (max-width: 480px) {
-          .btn { width: 100%; text-align: center; } /* botón full-width en móvil pequeño */
+        .btn.dark {
+          background: #1a1a1a;
+          color: #fff;
+          border-color: #2a2a2a;
         }
 
         /* MODAL */
@@ -360,7 +366,7 @@ export default function BestSellers() {
           background: rgba(0,0,0,.6);
           display: grid;
           place-items: center;
-          z-index: 80;
+          z-index: 9999; /* ↑ (4) SUBIDO para evitar overlays externos */
           padding: 18px;
         }
         .dialog {
@@ -389,7 +395,8 @@ export default function BestSellers() {
           background: #161616;
           border: 1px solid #2a2a2a;
           color: #fff;
-          width: 40px; height: 40px;
+          width: 36px;
+          height: 36px;
           border-radius: 10px;
           cursor: pointer;
           font-size: 22px;
@@ -409,7 +416,7 @@ export default function BestSellers() {
             radial-gradient(900px 340px at 50% 80%, rgba(255,122,0,.24), transparent 60%),
             #0b0b0b;
         }
-        .phTxt { font-weight: 800; font-size: clamp(24px, 6vw, 52px); color: rgba(255,255,255,.85); }
+        .phTxt { font-weight: 800; font-size: clamp(28px, 6vw, 52px); color: rgba(255,255,255,.85); }
 
         .dlgActions {
           display: flex;
@@ -420,10 +427,9 @@ export default function BestSellers() {
           background: #101010;
         }
 
-        /* Ajustes extra para móvil (aprovecha la altura real de la barra del navegador) */
         @media (max-width: 640px) {
-          .dialog { width: 100%; border-radius: 0; }
-          .preview { height: calc(100dvh - 110px); } /* dvh = viewport dinámico móvil */
+          .dialog { width: 100%; }
+          .preview { height: 62vh; }
         }
       `}</style>
     </section>
