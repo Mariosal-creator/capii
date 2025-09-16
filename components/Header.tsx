@@ -8,7 +8,7 @@ type NavItem = { label: string; href: `#${string}` };
 
 const nav: NavItem[] = [
   { label: "Inicio", href: "#inicio" },
-  { label: "Productos", href: "#productos" },
+  { label: "CapiiWear", href: "#capii-wear" },
   { label: "Somos", href: "#somos" },
 ];
 
