@@ -1,26 +1,264 @@
-@import "tailwindcss";
+/* Fuente */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
 
+/* Reset básico */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+a { color: inherit; text-decoration: none; }
+
+/* Contenedor general (ancho del mock ~1280px) */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+/* ----- HEADER ----- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --orange: #FF7A00;
+  --black: #000000;
+  --white: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.hdr {
+  position: sticky;
+  top: 0;
+  inset-inline: 0;
+  z-index: 50;
+  background: var(--black);
+  color: var(--white);
+  height: 80px; /* h-20 */
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 0 rgba(0,0,0,.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Grid: [izquierda | centro | derecha] */
+.hdr-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Izquierda: SOLO LOGO */
+.hdr-left { display: flex; align-items: center; gap: 0; min-width: 0; }
+/* IMPORTANTE: el logo ahora respeta el ancho natural del PNG */
+.hdr-logo { height: 40px; width: auto; object-fit: contain; }
+
+/* Centro */
+.hdr-nav {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 48px; /* separación tipo mock */
+}
+.hdr-link {
+  font-size: 26px;
+  letter-spacing: .2px;
+  transition: color .2s ease;
+  color: var(--white);
+}
+.hdr-link:hover { color: #ff9b3a; }
+.hdr-link.active { color: var(--orange); font-weight: 600; }
+
+/* Derecha */
+.hdr-right { justify-self: end; }
+.hdr-btn {
+  display: inline-block;
+  padding: 8px 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: rgba(0,0,0,.9);
+  background: var(--orange);
+  border: 1px solid rgba(234,88,12,.6);
+  border-radius: 14px;
+  box-shadow: 0 2px 0 rgba(0,0,0,.35);
+  transform: translateY(0);
+  transition: filter .15s ease, transform .1s ease;
+}
+.hdr-btn:hover { filter: brightness(1.1); }
+.hdr-btn:active { transform: translateY(1px); }
+
+/* (Opcional) ocultar nav en móviles pequeños */
+@media (max-width: 768px) {
+  .hdr-nav { display: none; }
+}
+/*-------------------------------
+
+
+
+
+/* ======= MENÚ HAMBURGUESA (móvil) ======= */
+
+/* Botón hamburguesa: oculto en desktop */
+.hdr-burger{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;border:1px solid #2a2a2a;background:#0f0f0f;color:#fff;cursor:pointer}
+.hdr-burger .bar{display:block;width:22px;height:2px;background:#fff;position:relative}
+.hdr-burger .bar::before,.hdr-burger .bar::after{content:"";position:absolute;left:0;width:22px;height:2px;background:#fff}
+.hdr-burger .bar::before{top:-6px}
+.hdr-burger .bar::after{top:6px}
+
+/* Overlay oscuro al abrir el menú */
+.hdr-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .2s}
+.hdr-overlay.open{opacity:1;pointer-events:auto}
+
+/* Drawer lateral derecho */
+.hdr-drawer{position:fixed;top:0;right:0;height:100%;width:80%;max-width:320px;background:#111;color:#fff;transform:translateX(100%);transition:transform .22s ease;display:flex;flex-direction:column;padding:20px;z-index:60}
+.hdr-drawer.open{transform:translateX(0)}
+
+.drawer-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.hdr-close{background:transparent;border:0;color:#fff;font-size:32px;line-height:1;cursor:pointer}
+
+/* Links del drawer */
+.drawer-nav{display:flex;flex-direction:column;margin-top:8px}
+.drawer-link{font-size:22px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.drawer-cta{display:inline-block;margin-top:14px;text-align:center;padding:12px 18px;font-size:20px;font-weight:600;border-radius:12px;background:var(--orange);color:rgba(0,0,0,.9);border:1px solid rgba(234,88,12,.6);box-shadow:0 2px 0 rgba(0,0,0,.35)}
+
+/* Breakpoint: en móviles escondemos el nav y CTA de la derecha, mostramos hamburguesa */
+@media (max-width:768px){
+  .hdr{height:64px}
+  .hdr-logo{height:32px}
+
+  .hdr-nav{display:none}         /* oculta menú central en móvil */
+  .hdr-btn-link{display:none}    /* oculta botón Contacto (derecha) */
+
+  .hdr-burger{display:inline-flex}
+}
+/*-----------------------------------------------
+
+
+/* Scroll suave como fallback (además del JS) */
+html { scroll-behavior: smooth; }
+
+/* Compensación del header pegajoso al saltar por anclas */
+#inicio, #productos, #somos, #contacto { scroll-margin-top: 90px; }
+
+/* Activo en el drawer (igual que en el nav central) */
+.drawer-link.active { color: var(--orange); font-weight: 600; }
+
+
+/*----------------------------------------------------------------------
+/* ===== Banner / Slider ===== */
+.bnr{
+  position: relative;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+  /* alto adaptable: mínimo 360, ideal 64vh, máx 680 */
+  height: clamp(360px, 64vh, 680px);
+  color: #fff;
+}
+
+.bnr-track{
+  display: flex;
+  height: 100%;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+}
+
+.bnr-slide{
+  position: relative;
+  min-width: 100%;
+  height: 100%;
+}
+
+.bnr-media{
+  position: absolute;
+  inset: 0;
+}
+
+.bnr-img{
+  object-fit: cover;
+  filter: saturate(1.05);
+}
+
+.bnr-overlay{
+  position: absolute;
+  inset: 0;
+  /* degradado moderno con tu paleta */
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.45) 35%, rgba(0,0,0,.55) 100%),
+    radial-gradient(1200px 400px at 20% 20%, rgba(255,122,0,.28), transparent 60%);
+  pointer-events: none;
+}
+
+.bnr-content{
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  padding-block: 32px;
+}
+
+.bnr-title{
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: .2px;
+  margin: 0;
+}
+
+.bnr-caption{
+  font-size: clamp(14px, 2.2vw, 18px);
+  color: #e5e7eb;
+  max-width: min(60ch, 92%);
+  margin: 0;
+}
+
+.bnr-cta{
+  display: inline-block;
+  margin-top: 8px;
+  padding: 10px 22px;
+  font-size: clamp(14px, 1.8vw, 18px);
+  font-weight: 700;
+  color: rgba(0,0,0,.92);
+  background: var(--orange);
+  border: 1px solid rgba(234,88,12,.6);
+  border-radius: 14px;
+  box-shadow: 0 2px 0 rgba(0,0,0,.35);
+  transition: filter .15s ease, transform .08s ease;
+}
+.bnr-cta:hover{ filter: brightness(1.05); }
+.bnr-cta:active{ transform: translateY(1px); }
+
+/* Flechas */
+.bnr-arrow{
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  background: #0f0f0f;
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background .2s ease, border-color .2s ease, opacity .2s;
+  opacity: .9;
+}
+.bnr-arrow:hover{ background:#141414; border-color:#3a3a3a; }
+.bnr-arrow.left{ left: 16px; }
+.bnr-arrow.right{ right: 16px; }
+
+/* Dots */
+.bnr-dots{
+  position: absolute;
+  left: 0; right: 0; bottom: 14px;
+  display: flex; gap: 8px; justify-content: center; z-index: 2;
+}
+.bnr-dot{
+  width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255,255,255,.55);
+  border: none; cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+.bnr-dot:hover{ transform: scale(1.1); }
+.bnr-dot.active{ background: var(--orange); transform: scale(1.2); }
+
+/* Responsive tweaks */
+@media (max-width: 768px){
+  .bnr{ height: clamp(260px, 45vh, 420px); }
+  .bnr-caption{ max-width: 100%; }
 }
