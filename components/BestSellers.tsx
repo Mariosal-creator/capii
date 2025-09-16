@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const WHATSAPP_LINK =
   "https://wa.me/593982048240?text=Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos!!";
@@ -64,6 +64,7 @@ const ITEMS: Item[] = [
 
 export default function BestSellers() {
   const [ok, setOk] = useState<boolean[]>(() => ITEMS.map(() => true));
+  const [openIdx, setOpenIdx] = useState<number | null>(null); // índice del modal abierto
 
   const initials = (name: string) =>
     name
@@ -72,6 +73,21 @@ export default function BestSellers() {
       .slice(0, 2)
       .map((n) => n[0]?.toUpperCase())
       .join("");
+
+  // Cerrar con ESC y bloquear scroll cuando el modal está abierto
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenIdx(null);
+    };
+    window.addEventListener("keydown", onKey);
+
+    const prev = document.body.style.overflow;
+    if (openIdx !== null) document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [openIdx]);
 
   return (
     <section className="bs" aria-labelledby="bs-title">
@@ -83,35 +99,38 @@ export default function BestSellers() {
         <ul className="grid" role="list">
           {ITEMS.map((p, i) => (
             <li key={`${p.title}-${i}`} className="card">
-              {/* MEDIA (linkea al checkout del producto) */}
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="media"
-                aria-label={`${p.title} – abrir checkout`}
+              {/* MEDIA → abre modal de visualización */}
+              <button
+                type="button"
+                className="mediaBtn"
+                aria-label={`Ver imagen de ${p.title}`}
+                onClick={() => setOpenIdx(i)}
               >
-                {p.src && ok[i] ? (
-                  <Image
-                    src={p.src}
-                    alt={p.title}
-                    fill
-                    sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                    className="img"
-                    onError={() =>
-                      setOk((arr) => arr.map((v, idx) => (idx === i ? false : v)))
-                    }
-                  />
-                ) : (
-                  <div className={`ph ph-${(i % 3) + 1}`} aria-hidden="true">
-                    <span className="ph-txt">{initials(p.title)}</span>
-                  </div>
-                )}
-                {p.badge && <span className="badge">{p.badge}</span>}
-              </a>
+                <div className="media">
+                  {p.src && ok[i] ? (
+                    <Image
+                      src={p.src}
+                      alt={p.title}
+                      fill
+                      sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                      className="img"
+                      onError={() =>
+                        setOk((arr) => arr.map((v, idx) => (idx === i ? false : v)))
+                      }
+                      priority={i < 2} // carga rápida de los primeros ítems en móvil
+                    />
+                  ) : (
+                    <div className={`ph ph-${(i % 3) + 1}`} aria-hidden="true">
+                      <span className="ph-txt">{initials(p.title)}</span>
+                    </div>
+                  )}
+                  {p.badge && <span className="badge">{p.badge}</span>}
+                </div>
+              </button>
 
               {/* BODY */}
               <div className="body">
+                {/* Título: abre checkout en nueva pestaña */}
                 <a
                   className="name"
                   href={p.href}
@@ -156,6 +175,57 @@ export default function BestSellers() {
         </ul>
       </div>
 
+      {/* MODAL de visualización (sin botón Ir al checkout) */}
+      {openIdx !== null && (
+        <div
+          className="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={`modal-title-${openIdx}`}
+          onClick={() => setOpenIdx(null)} // click en overlay cierra
+        >
+          <div
+            className="dialog"
+            onClick={(e) => e.stopPropagation()} // no cerrar al click dentro
+          >
+            <header className="dlgTop">
+              <h3 id={`modal-title-${openIdx}`} className="dlgTitle">
+                {ITEMS[openIdx].title}
+              </h3>
+              <button
+                className="dlgClose"
+                aria-label="Cerrar"
+                onClick={() => setOpenIdx(null)}
+              >
+                ×
+              </button>
+            </header>
+
+            <div className="preview">
+              {ITEMS[openIdx].src && ok[openIdx] ? (
+                <Image
+                  src={ITEMS[openIdx].src!}
+                  alt={ITEMS[openIdx].title}
+                  fill
+                  sizes="100vw"
+                  className="previewImg"
+                />
+              ) : (
+                <div className="previewPh">
+                  <span className="phTxt">{initials(ITEMS[openIdx].title)}</span>
+                </div>
+              )}
+            </div>
+
+            <footer className="dlgActions">
+              <button className="btn dark" onClick={() => setOpenIdx(null)}>
+                Cerrar
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
+
       <style jsx>{`
         .bs {
           --orange: #ff7a00;
@@ -163,13 +233,18 @@ export default function BestSellers() {
           --muted: #a1a1aa;
           background: linear-gradient(180deg, #000 0%, #0b0b0b 100%);
           color: #fff;
-          padding: clamp(40px, 6vw, 64px) 0;
+          padding: clamp(32px, 6vw, 64px) 0;
           font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
         }
         .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-        .ttl { margin: 0 0 20px; font-size: clamp(22px, 4.2vw, 34px); font-weight: 800; letter-spacing: .2px; }
+        @media (max-width: 768px) {
+          .wrap { padding: 0 16px; }
+        }
+
+        .ttl { margin: 0 0 20px; font-size: clamp(20px, 4.2vw, 34px); font-weight: 800; letter-spacing: .2px; }
         .ttl span { color: var(--orange); }
 
+        /* Grid responsiva: 1 → 2 → 3 columnas */
         .grid {
           display: grid;
           gap: clamp(12px, 2.4vw, 20px);
@@ -196,11 +271,25 @@ export default function BestSellers() {
           grid-template-rows: auto 1fr;
         }
         .card:hover { transform: translateY(-3px); border-color: #262626; box-shadow: 0 16px 40px rgba(0,0,0,.22); }
+        @media (max-width: 480px) {
+          .card { border-radius: 12px; }
+        }
+
+        .mediaBtn {
+          padding: 0;
+          border: 0;
+          background: transparent;
+          cursor: zoom-in;
+          display: block;
+          width: 100%;
+        }
+        @media (pointer: coarse) {
+          .mediaBtn { cursor: pointer; } /* mejor feedback en touch */
+        }
 
         .media {
           position: relative;
-          display: block;
-          aspect-ratio: 4 / 3;
+          aspect-ratio: 4 / 3;        /* mantiene proporción en todas las pantallas */
           background: #0f0f0f;
         }
         .img { object-fit: cover; }
@@ -210,7 +299,7 @@ export default function BestSellers() {
         .ph-1 { background: radial-gradient(800px 300px at 20% 20%, rgba(255,122,0,.3), transparent 60%), #0f0f0f; }
         .ph-2 { background: radial-gradient(800px 300px at 80% 20%, rgba(255,122,0,.28), transparent 60%), #0f0f0f; }
         .ph-3 { background: radial-gradient(900px 340px at 50% 80%, rgba(255,122,0,.24), transparent 60%), #0f0f0f; }
-        .ph-txt { font-weight: 800; font-size: clamp(22px, 6vw, 40px); color: rgba(255,255,255,.8); letter-spacing: .5px; }
+        .ph-txt { font-weight: 800; font-size: clamp(18px, 6vw, 40px); color: rgba(255,255,255,.8); letter-spacing: .5px; }
 
         .badge {
           position: absolute;
@@ -245,11 +334,10 @@ export default function BestSellers() {
         .cart { display: inline-block; color: var(--orange); }
         .muted { color: var(--muted); }
 
-        /* Botón Info -> WhatsApp */
         .btn {
           justify-self: start;
           display: inline-block;
-          padding: 8px 14px;
+          padding: 10px 16px;                 /* mayor área táctil */
           border-radius: 12px;
           border: 1px solid rgba(234,88,12,.6);
           background: var(--orange);
@@ -261,6 +349,82 @@ export default function BestSellers() {
         }
         .btn:hover { filter: brightness(1.05); }
         .btn:active { transform: translateY(1px); }
+        @media (max-width: 480px) {
+          .btn { width: 100%; text-align: center; } /* botón full-width en móvil pequeño */
+        }
+
+        /* MODAL */
+        .modal {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,.6);
+          display: grid;
+          place-items: center;
+          z-index: 80;
+          padding: 18px;
+        }
+        .dialog {
+          width: min(100%, 980px);
+          background: #0f0f0f;
+          border: 1px solid #242424;
+          border-radius: 16px;
+          box-shadow: 0 30px 80px rgba(0,0,0,.55);
+          display: grid;
+          grid-template-rows: auto 1fr auto;
+          overflow: hidden;
+        }
+        .dlgTop {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 14px;
+          border-bottom: 1px solid #1d1d1d;
+        }
+        .dlgTitle {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 700;
+        }
+        .dlgClose {
+          background: #161616;
+          border: 1px solid #2a2a2a;
+          color: #fff;
+          width: 40px; height: 40px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-size: 22px;
+          line-height: 1;
+        }
+
+        .preview {
+          position: relative;
+          width: 100%;
+          height: min(72vh, 720px);
+          background: #000;
+        }
+        .previewImg { object-fit: contain; }
+        .previewPh {
+          position: absolute; inset: 0; display: grid; place-items: center;
+          background:
+            radial-gradient(900px 340px at 50% 80%, rgba(255,122,0,.24), transparent 60%),
+            #0b0b0b;
+        }
+        .phTxt { font-weight: 800; font-size: clamp(24px, 6vw, 52px); color: rgba(255,255,255,.85); }
+
+        .dlgActions {
+          display: flex;
+          gap: 10px;
+          justify-content: flex-end;
+          padding: 12px 14px;
+          border-top: 1px solid #1d1d1d;
+          background: #101010;
+        }
+
+        /* Ajustes extra para móvil (aprovecha la altura real de la barra del navegador) */
+        @media (max-width: 640px) {
+          .dialog { width: 100%; border-radius: 0; }
+          .preview { height: calc(100dvh - 110px); } /* dvh = viewport dinámico móvil */
+        }
       `}</style>
     </section>
   );
