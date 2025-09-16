@@ -475,3 +475,104 @@ html { scroll-behavior: smooth; }
 @media (prefers-color-scheme: light) {
   .ftr { background: #111315; }
 }
+/*---------------------------------------------------------*/
+
+
+.brand-intro {
+  padding: 80px 0;
+  background: #fafafa;
+  text-align: center;
+}
+
+.brand-intro .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.brand-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--orange);
+}
+
+.brand-text {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin-bottom: 18px;
+  color: #333;
+}
+
+.brand-essence {
+  margin-top: 28px;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #555;
+}
+
+@media (max-width: 640px) {
+  .brand-title { font-size: 2rem; }
+  .brand-text { font-size: 1rem; }
+  .brand-essence { font-size: 1.1rem; }
+}
+/*---------------------------------------------------------*/
+
+.brand-intro {
+  position: relative;
+  padding: 100px 0;
+  text-align: center;
+  color: #fff;
+
+  /* ✅ Imagen de fondo */
+  background: url("/bg-capii.jpg") center/cover no-repeat;
+}
+
+.brand-intro .overlay {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-intro::before {
+  /* ✅ Overlay negro con opacidad */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.brand-intro .container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+  z-index: 1;
+}
+
+.brand-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 28px;
+  color: var(--orange);
+}
+
+.brand-text {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.brand-essence {
+  margin-top: 32px;
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 500;
+  color: #f0f0f0;
+}
+
+@media (max-width: 640px) {
+  .brand-title { font-size: 2rem; }
+  .brand-text { font-size: 1rem; }
+  .brand-essence { font-size: 1.1rem; }
+}
