@@ -42,7 +42,7 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* CENTRO: navegación (desktop) */}
+        {/* CENTRO: navegación (solo desktop) */}
         <nav className="hdr-nav">
           {nav.map((item) => {
             const isActive = item.href === "/" ? pathname === "/" : pathname === item.href;
@@ -54,14 +54,14 @@ export default function Header() {
           })}
         </nav>
 
-        {/* DERECHA: botón (visible también en móvil) */}
+        {/* DERECHA: botón Contacto (solo desktop) */}
         <div className="hdr-right">
           <Link href="#contacto">
             <span className="hdr-btn">Contacto</span>
           </Link>
         </div>
 
-        {/* BOTÓN HAMBURGUESA (móvil) */}
+        {/* BOTÓN HAMBURGUESA (solo móvil) */}
         <button
           className={`burger ${open ? "open" : ""}`}
           aria-label="Abrir menú"
@@ -75,7 +75,7 @@ export default function Header() {
         </button>
       </div>
 
-      {/* MENÚ MÓVIL: overlay + panel */}
+      {/* MENÚ MÓVIL: overlay + panel deslizante */}
       <div
         id="mobile-menu"
         className={`mnav ${open ? "show" : ""}`}
@@ -98,12 +98,15 @@ export default function Header() {
               const isActive = item.href === "/" ? pathname === "/" : pathname === item.href;
               return (
                 <li key={item.href}>
-                  <Link href={item.href} className={`mnav-link ${isActive ? "active" : ""}`}>{item.label}</Link>
+                  <Link href={item.href} className={`mnav-link ${isActive ? "active" : ""}`}>
+                    {item.label}
+                  </Link>
                 </li>
               );
             })}
           </ul>
 
+          {/* CTA Contacto SOLO dentro del menú móvil */}
           <div className="mnav-cta">
             <Link href="#contacto" className="mnav-btn">Contacto</Link>
           </div>
@@ -111,28 +114,29 @@ export default function Header() {
       </div>
 
       <style jsx>{`
-        :root { --orange:#ff7a00; --black:#000; --white:#fff; }
+        :root { --orange:#FF7A00; --black:#000; --white:#fff; }
+
+        /* CONTENEDOR GENERAL */
         .container { max-width:1280px; margin:0 auto; padding:0 24px; }
 
+        /* HEADER BASE */
         .hdr {
           position:sticky; top:0; inset-inline:0; z-index:50;
           background:var(--black); color:var(--white);
           height:80px; display:flex; align-items:center;
           box-shadow:0 2px 0 rgba(0,0,0,.25);
         }
-        .hdr-grid {
-          display:grid; grid-template-columns:auto 1fr auto; align-items:center; width:100%;
-        }
+        .hdr-grid { display:grid; grid-template-columns:auto 1fr auto; align-items:center; width:100%; }
         .hdr-left { display:flex; align-items:center; min-width:0; }
         .hdr-logo { height:40px; width:auto; object-fit:contain; }
 
         /* NAV DESKTOP */
-        .hdr-nav { justify-self:center; display:flex; align-items:center; gap:48px; }
+        .hdr-nav { justify-self:center; display:flex; align-items:center; gap:36px; } /* compacto */
         .hdr-link { font-size:26px; letter-spacing:.2px; transition:color .2s ease; color:var(--white); }
         .hdr-link:hover { color:#ff9b3a; }
         .hdr-link.active { color:var(--orange); font-weight:600; }
 
-        /* BOTÓN DESKTOP/MÓVIL */
+        /* BOTÓN DESKTOP */
         .hdr-right { justify-self:end; }
         .hdr-btn {
           display:inline-block; padding:8px 20px; font-size:22px; font-weight:600;
@@ -156,7 +160,7 @@ export default function Header() {
         .burger.open span:nth-child(2){ opacity:0; }
         .burger.open span:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
 
-        /* MENÚ MÓVIL */
+        /* MENÚ MÓVIL OVERLAY + PANEL */
         .mnav {
           position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(2px);
           z-index:60; opacity:0; pointer-events:none; transition:opacity .2s ease;
@@ -169,36 +173,38 @@ export default function Header() {
           display:grid; grid-template-rows:auto 1fr auto;
         }
         .mnav.show .mnav-panel { transform:translateX(0); }
+
         .mnav-head { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid #1d1d1d; }
         .mnav-close {
-          width:40px; height:40px; border-radius:10px; background:#161616; border:1px solid #2a2a2a; color:#fff; font-size:22px; cursor:pointer;
+          width:40px; height:40px; border-radius:10px; background:#161616; border:1px solid #2a2a2a;
+          color:#fff; font-size:22px; cursor:pointer;
         }
-        .mnav-list { list-style:none; padding:12px; margin:0; display:grid; gap:8px; }
+
+        /* Lista compacta */
+        .mnav-list { list-style:none; padding:8px 10px; margin:0; display:grid; gap:4px; }
         .mnav-link {
-          display:block; padding:12px 14px; border-radius:12px; color:#fff; text-decoration:none;
-          border:1px solid #1f1f1f; background:#121212; font-weight:700; letter-spacing:.2px;
+          display:block; padding:10px 12px; border-radius:12px; color:#fff; text-decoration:none;
+          border:1px solid #1f1f1f; background:#121212; font-weight:700; letter-spacing:.1px;
         }
         .mnav-link.active { border-color:#2a2a2a; outline:2px solid #222; color:var(--orange); }
         .mnav-link:hover { background:#141414; }
+
         .mnav-cta { padding:12px; border-top:1px solid #1d1d1d; }
         .mnav-btn {
           display:block; text-align:center; padding:12px 16px; border-radius:12px;
-          background:var(--orange); color:rgba(0,0,0,.92); font-weight:800;
-          border:1px solid rgba(234,88,12,.6); box-shadow:0 2px 0 rgba(0,0,0,.35); text-decoration:none;
+          background:#FF7A00; color:#000; font-weight:800;
+          border:1px solid rgba(234,88,12,.6); box-shadow:0 8px 22px rgba(255,122,0,.35);
+          text-decoration:none; transition:filter .15s ease, transform .08s ease;
         }
+        .mnav-btn:hover{ filter:brightness(1.06); }
+        .mnav-btn:active{ transform:translateY(1px); }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-          /* Ajuste de columnas: logo | espacio | botón */
           .hdr-grid { grid-template-columns: auto 1fr auto; }
-          /* Ocultamos la nav, pero NO el botón */
-          .hdr-nav { display:none; }
-          .hdr-right { display:block; justify-self:end; }
-          /* Botón compacto y con margen para no chocar con la hamburguesa */
-          .hdr-btn { font-size:14px; padding:6px 10px; border-radius:10px; }
-          .hdr-right { margin-right: 56px; } /* espacio para el ícono burger */
-          /* Mostrar hamburguesa */
-          .burger { display:block; }
+          .hdr-nav { display:none; }   /* oculta menú en móvil */
+          .hdr-right { display:none; } /* oculta botón exterior en móvil */
+          .burger { display:block; }   /* muestra hamburguesa en móvil */
         }
       `}</style>
     </header>
