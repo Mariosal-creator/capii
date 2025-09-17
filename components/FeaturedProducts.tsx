@@ -5,17 +5,19 @@ import { useEffect, useRef, useState } from "react";
 
 type Product = { name: string; price: number; img: string; href?: string };
 
+// Precios en USD (según tu pedido)
 const PRODUCTS: Product[] = [
-  { name: "Calentador",              price: 45, img: "/featured/calentador.png" },
-  { name: "Buso con capucha",        price: 60, img: "/featured/buso-capucha.png" },
-  { name: "Gorra",                   price: 25, img: "/featured/gorra.png" },
+  { name: "Calentador",              price: 75, img: "/featured/calentador.png" },
+  { name: "Buso con capucha",        price: 65, img: "/featured/buso-capucha.png" },
+  { name: "Gorra",                   price: 30, img: "/featured/gorra.png" }, // elegí 30 USD (mencionaste 40 y 30; usé el último valor)
   { name: "Baso",                    price: 15, img: "/featured/baso.png" },
-  { name: "Camiseta para caballero", price: 20, img: "/featured/camiseta-caballero.png" },
-  { name: "Camiseta para dama",      price: 20, img: "/featured/camiseta-dama.png" },
+  { name: "Camiseta para caballero", price: 35, img: "/featured/camiseta-caballero.png" },
+  { name: "Camiseta para dama",      price: 35, img: "/featured/camiseta-dama.png" },
 ];
 
 export default function FeaturedProducts() {
-  const fmt = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR", minimumFractionDigits: 2 });
+  // Formato en dólares
+  const fmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 });
 
   const trackRef = useRef<HTMLDivElement | null>(null);
   const slideRefs = useRef<HTMLDivElement[]>([]);
@@ -82,9 +84,7 @@ export default function FeaturedProducts() {
       el.scrollTo({ left: next >= max ? 0 : next, behavior: "smooth" });
     }, 3000);
 
-    const onVis = () => {
-      if (document.hidden) { clearInterval(id); }
-    };
+    const onVis = () => { if (document.hidden) clearInterval(id); };
     document.addEventListener("visibilitychange", onVis);
     return () => { clearInterval(id); document.removeEventListener("visibilitychange", onVis); };
   }, [paused, reduced]);
@@ -102,7 +102,7 @@ export default function FeaturedProducts() {
         <div className="panel">
           <div className="head">
             <h2 className="brand">Capii</h2>
-            <p className="title">Productos destacados</p>
+            <p className="title">Vive con nuestro Style</p>
           </div>
 
           <div className="slider">
@@ -165,47 +165,30 @@ export default function FeaturedProducts() {
           --panelEdge:#e5e7eb;
           --bg:#f5f6f8;
         }
-
-        /* Sección */
         .fp{ background:var(--bg); padding:24px 0 28px; }
         .wrap{ max-width:1100px; margin:0 auto; padding:0 16px; }
-        .panel{
-          background:var(--panel); border:1px solid var(--panelEdge);
-          border-radius:20px; box-shadow:0 8px 30px rgba(0,0,0,.06);
-        }
-
-        /* Header */
+        .panel{ background:var(--panel); border:1px solid var(--panelEdge); border-radius:20px; box-shadow:0 8px 30px rgba(0,0,0,.06); }
         .head{ display:flex; flex-direction:column; gap:6px; padding:18px 18px 6px; }
         @media(min-width:640px){ .head{flex-direction:row; align-items:center; justify-content:space-between; padding:22px 24px 8px;} }
         .brand{ margin:0; font-size:clamp(22px,4vw,28px); font-weight:900; color:var(--ink); letter-spacing:.2px; }
         .title{ margin:0; font-size:clamp(16px,3.6vw,20px); font-weight:700; color:var(--ink); }
 
-        /* Slider */
         .slider{ padding:10px 12px 16px; }
         @media(min-width:640px){ .slider{ padding:10px 18px 18px; } }
 
         .track{
-          display:flex; gap:16px;
-          overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
-          scroll-behavior:smooth; padding:0 2px 6px;
-          touch-action: pan-x pinch-zoom;
-          scrollbar-width:none; /* Firefox */
+          display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+          scroll-behavior:smooth; padding:0 2px 6px; touch-action: pan-x pinch-zoom; scrollbar-width:none;
         }
-        .track::-webkit-scrollbar{ height:0; } /* Oculta en mobile WebKit */
+        .track::-webkit-scrollbar{ height:0; }
 
-        .slide{ scroll-snap-align:start; flex:0 0 92%; max-width:420px; } /* 1 card grande en móvil */
-        @media(min-width:640px){ .slide{ flex-basis:48%; max-width:480px; } }   /* ~2 por vista */
-        @media(min-width:1024px){ .slide{ flex-basis:24%; max-width:320px; } }  /* ~4 por vista */
+        .slide{ scroll-snap-align:start; flex:0 0 92%; max-width:420px; }
+        @media(min-width:640px){ .slide{ flex-basis:48%; max-width:480px; } }
+        @media(min-width:1024px){ .slide{ flex-basis:24%; max-width:320px; } }
 
-        .card{
-          height:100%; background:#fff; border:1px solid var(--panelEdge);
-          border-radius:14px; box-shadow:0 2px 10px rgba(0,0,0,.04);
-          display:flex; flex-direction:column; justify-content:space-between;
-        }
-        .media{
-          position:relative; aspect-ratio:4/3; margin:14px; border-radius:12px;
-          overflow:hidden; background:#fff;
-        }
+        .card{ height:100%; background:#fff; border:1px solid var(--panelEdge); border-radius:14px; box-shadow:0 2px 10px rgba(0,0,0,.04);
+               display:flex; flex-direction:column; justify-content:space-between; }
+        .media{ position:relative; aspect-ratio:4/3; margin:14px; border-radius:12px; overflow:hidden; background:#fff; }
         .img{ object-fit:contain; transition:transform .3s ease; }
         .media:hover .img{ transform:scale(1.05); }
 
@@ -213,25 +196,16 @@ export default function FeaturedProducts() {
         .name{ margin:0; font-size:clamp(14px,3.2vw,15px); font-weight:700; color:var(--ink); }
         .price{ margin-top:4px; font-weight:900; color:var(--ink); font-size:clamp(14px,3.4vw,15px); }
 
-        .btn{
-          display:inline-flex; align-items:center; justify-content:center;
-          height:clamp(36px,6.4vw,40px); padding:0 20px; border-radius:999px; margin-top:10px;
-          background:var(--orange); color:#fff; font-weight:700; font-size:clamp(14px,3.6vw,15px);
-          border:0; box-shadow:0 6px 16px rgba(255,122,0,.35);
-          transition:filter .15s ease, transform .06s ease; text-decoration:none;
-          min-width:120px;
-        }
+        .btn{ display:inline-flex; align-items:center; justify-content:center; height:clamp(36px,6.4vw,40px); padding:0 20px; border-radius:999px; margin-top:10px;
+              background:var(--orange); color:#fff; font-weight:700; font-size:clamp(14px,3.6vw,15px);
+              border:0; box-shadow:0 6px 16px rgba(255,122,0,.35); transition:filter .15s ease, transform .06s ease; text-decoration:none; min-width:120px; }
         .btn:hover{ filter:brightness(1.05); }
         .btn:active{ transform:translateY(1px); }
 
         .dots{ margin-top:6px; display:flex; justify-content:center; gap:8px; }
-        .dot{
-          width:8px; height:8px; border-radius:999px; background:#e5e7eb;
-          border:0; cursor:pointer; transition:all .2s ease;
-        }
-        .dot.active{ width:32px; background:var(--orange); }
+        .dot{ width:8px; height:8px; border-radius:999px; background:#e5e7eb; border:0; cursor:pointer; transition:all .2s ease; }
+        .dot.active{ width:32px; background:#FF7A00; }
 
-        /* Respeta reduce motion */
         @media (prefers-reduced-motion: reduce) {
           .track{ scroll-behavior:auto; }
           .img{ transition:none; }
