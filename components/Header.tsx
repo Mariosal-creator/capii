@@ -180,11 +180,12 @@ export default function Header() {
           color:#fff; font-size:22px; cursor:pointer;
         }
 
-        /* Lista compacta */
-        .mnav-list { list-style:none; padding:8px 10px; margin:0; display:grid; gap:4px; }
+        /* Lista más compacta (vertical) */
+        .mnav-list { list-style:none; padding:6px 10px; margin:0; display:grid; gap:2px; }
         .mnav-link {
-          display:block; padding:10px 12px; border-radius:12px; color:#fff; text-decoration:none;
+          display:block; padding:8px 12px; border-radius:12px; color:#fff; text-decoration:none;
           border:1px solid #1f1f1f; background:#121212; font-weight:700; letter-spacing:.1px;
+          line-height:1.2;
         }
         .mnav-link.active { border-color:#2a2a2a; outline:2px solid #222; color:var(--orange); }
         .mnav-link:hover { background:#141414; }
