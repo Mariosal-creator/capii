@@ -215,14 +215,14 @@ export default function BestSellers() {
               </button>
             </header>
 
-            {/* PREVIEW: imagen a tamaño ORIGINAL (sin escalar) */}
-            <div className="preview noScale">
+            <div className="preview">
               {ITEMS[openIdx].src && ok[openIdx] ? (
-                // Usamos <img> nativo para respetar tamaño natural.
-                <img
+                <Image
                   src={ITEMS[openIdx].src!}
                   alt={ITEMS[openIdx].title}
-                  className="previewImgNatural"
+                  fill
+                  sizes="100vw"
+                  className="previewImg"
                 />
               ) : (
                 <div className="previewPh">
@@ -300,46 +300,22 @@ export default function BestSellers() {
 
         /* MODAL */
         .modal{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:grid; place-items:center; z-index:9999; padding:18px; }
-        .dialog{
-          width:min(100%,980px);
-          max-height:calc(100dvh - 40px); /* limita el alto total del cuadro de diálogo */
-          background:#0f0f0f; border:1px solid #242424; border-radius:16px;
-          box-shadow:0 30px 80px rgba(0,0,0,.55);
-          display:grid; grid-template-rows:auto 1fr auto; overflow:hidden;
+        .dialog{ width:min(100%,980px); background:#0f0f0f; border:1px solid #242424; border-radius:16px;
+          box-shadow:0 30px 80px rgba(0,0,0,.55); display:grid; grid-template-rows:auto 1fr auto; overflow:hidden;
         }
         .dlgTop{ display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #1d1d1d; }
         .dlgTitle{ margin:0; font-size:16px; font-weight:700; }
         .dlgClose{ background:#161616; border:1px solid #2a2a2a; color:#fff; width:36px; height:36px; border-radius:10px; cursor:pointer; font-size:22px; line-height:1; }
 
-        /* PREVIEW que NO escala la imagen */
-        .preview.noScale{
-          position:relative;
-          background:#000;
-          padding:16px;
-          overflow:auto;            /* scroll si la imagen es más grande que el panel */
-          display:grid;
-          place-items:center;
-        }
-        .previewImgNatural{
-          display:block;
-          /* Clave: sin límites de tamaño */
-          max-width:none !important;
-          max-height:none !important;
-          width:auto;
-          height:auto;
-          image-rendering:auto;
-          cursor:default;
-        }
-
+        .preview{ position:relative; width:100%; height:min(72vh, 720px); background:#000; }
+        .previewImg{ object-fit:contain; }
         .previewPh{ position:absolute; inset:0; display:grid; place-items:center; background:
           radial-gradient(900px 340px at 50% 80%, rgba(255,122,0,.24), transparent 60%), #0b0b0b; }
         .phTxt{ font-weight:800; font-size:clamp(24px,6vw,52px); color:rgba(255,255,255,.85); }
 
         .dlgActions{ display:flex; gap:10px; justify-content:flex-end; padding:12px 14px; border-top:1px solid #1d1d1d; background:#101010; }
 
-        @media (max-width:640px){
-          .dialog{ width:100%; border-radius:0; max-height:100dvh; }
-        }
+        @media (max-width:640px){ .dialog{ width:100%; border-radius:0; } .preview{ height:calc(100dvh - 110px); } }
       `}</style>
     </section>
   );
