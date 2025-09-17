@@ -76,7 +76,7 @@ export default function FeaturedProducts() {
   // Autoplay (pausa al tocar/hover/ocultar pestaña o si reduce motion)
   useEffect(() => {
     if (paused || reduced) return;
-    let id = window.setInterval(() => {
+  const id = window.setInterval(() => {
       const el = trackRef.current;
       if (!el) return;
       const next = el.scrollLeft + stepRef.current;
