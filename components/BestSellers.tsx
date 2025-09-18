@@ -264,7 +264,103 @@ export default function BestSellers() {
 
         .mediaBtn{ padding:0; border:0; background:transparent; cursor:zoom-in; display:block; width:100%; }
         .media{ position:relative; aspect-ratio:4/3; background:#0f0f0f; }
-        .img{ object-fit:cover; }
+        @media (max-width: 640px) {
+            .media {
+              background: #0f0f0f;
+            }
+            .img {
+              object-fit: contain !important;
+              width: 100% !important;
+              height: 100% !important;
+              border-radius: 10px !important;
+              max-width: 100% !important;
+              max-height: 100% !important;
+              display: block !important;
+            }
+            .previewImg {
+              object-fit: contain !important;
+              width: 100% !important;
+              height: auto !important;
+              max-height: 60vh !important;
+              border-radius: 12px !important;
+              background: #222 !important;
+              display: block !important;
+              margin: 0 auto !important;
+            }
+            .preview {
+              height: calc(100dvh - 110px) !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+            }
+        }
+    .img{
+      object-fit:cover;
+      width:100%;
+      height:100%;
+      border-radius:12px;
+      aspect-ratio: 4/3;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .previewImg{
+  object-fit:contain !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:90vw !important;
+  max-height:70vh !important;
+  border-radius:16px !important;
+  background:#222 !important;
+  display: block !important;
+  margin: 0 auto !important;
+    }
+    @media (max-width: 640px) {
+      .previewImg {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 90vw !important;
+        max-height: 60vh !important;
+        object-fit: contain !important;
+        border-radius: 12px !important;
+        margin: 0 auto !important;
+        background: #222 !important;
+        display: block !important;
+      }
+      .preview {
+        width: calc(100vw - 32px) !important;
+        max-width: 100vw !important;
+        aspect-ratio: 16/9 !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 16px !important;
+        background: #000 !important;
+        overflow: hidden !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+      }
+      .previewImg {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: auto !important;
+        max-height: 60vh !important;
+        object-fit: contain !important;
+        border-radius: 12px !important;
+        margin: 0 auto !important;
+        background: #222 !important;
+        display: block !important;
+        box-sizing: border-box !important;
+      }
+      .preview {
+        min-height: unset !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 24px 0 !important;
+      }
+    }
 
         .ph{ position:absolute; inset:0; display:grid; place-items:center; }
         .ph-1{ background: radial-gradient(800px 300px at 20% 20%, rgba(255,122,0,.3), transparent 60%), #0f0f0f; }

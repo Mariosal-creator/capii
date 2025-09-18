@@ -108,7 +108,7 @@ export default function Header() {
 
           {/* CTA Contacto SOLO dentro del menú móvil */}
           <div className="mnav-cta">
-            <Link href="#contacto" className="mnav-btn mnav-btn-orange">Contacto</Link>
+              <Link href="#contacto" className="mnav-btn mnav-btn-orange">Contacto</Link>
           </div>
         </nav>
       </div>

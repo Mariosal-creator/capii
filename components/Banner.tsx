@@ -25,7 +25,7 @@ export default function Banner() {
       title: "Soluciones para negocios",
       caption: "Planes a medida si quieres vender con capii.",
       ctaText: "Contáctanos",
-      ctaHref: "#contacto",
+  ctaHref: "https://wa.me/593982048240",
       bg: "bg-3",
     },
   ];
