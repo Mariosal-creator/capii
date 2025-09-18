@@ -108,7 +108,7 @@ export default function Header() {
 
           {/* CTA Contacto SOLO dentro del menú móvil */}
           <div className="mnav-cta">
-            <Link href="#contacto" className="mnav-btn">Contacto</Link>
+            <Link href="#contacto" className="mnav-btn mnav-btn-orange">Contacto</Link>
           </div>
         </nav>
       </div>
@@ -181,10 +181,23 @@ export default function Header() {
         }
 
         /* Lista más compacta (vertical) */
-        .mnav-list { list-style:none; padding:6px 10px; margin:0; display:grid; gap:2px; }
+        .mnav-list {
+          list-style:none;
+          padding:2px 6px;
+          margin:0;
+          display:grid;
+          gap:0.5px;
+        }
         .mnav-link {
-          display:block; padding:8px 12px; border-radius:12px; color:#fff; text-decoration:none;
-          border:1px solid #1f1f1f; background:#121212; font-weight:700; letter-spacing:.1px;
+          display:block;
+          padding:6px 10px;
+          border-radius:12px;
+          color:#fff;
+          text-decoration:none;
+          border:1px solid #1f1f1f;
+          background:#121212;
+          font-weight:700;
+          letter-spacing:.1px;
           line-height:1.2;
         }
         .mnav-link.active { border-color:#2a2a2a; outline:2px solid #222; color:var(--orange); }
@@ -192,10 +205,23 @@ export default function Header() {
 
         .mnav-cta { padding:12px; border-top:1px solid #1d1d1d; }
         .mnav-btn {
-          display:block; text-align:center; padding:12px 16px; border-radius:12px;
-          background:#FF7A00; color:#000; font-weight:800;
-          border:1px solid rgba(234,88,12,.6); box-shadow:0 8px 22px rgba(255,122,0,.35);
-          text-decoration:none; transition:filter .15s ease, transform .08s ease;
+          display:block;
+          text-align:center;
+          padding:12px 16px;
+          border-radius:12px;
+          background:#222;
+          color:#fff;
+          font-weight:800;
+          border:1px solid #333;
+          box-shadow:0 8px 22px rgba(255,122,0,.15);
+          text-decoration:none;
+          transition:filter .15s ease, transform .08s ease;
+        }
+        .mnav-btn-orange {
+          background:var(--orange);
+          color:#000;
+          border:1px solid rgba(234,88,12,.6);
+          box-shadow:0 8px 22px rgba(255,122,0,.35);
         }
         .mnav-btn:hover{ filter:brightness(1.06); }
         .mnav-btn:active{ transform:translateY(1px); }
