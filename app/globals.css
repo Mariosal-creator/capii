@@ -99,6 +99,101 @@ a { color: inherit; text-decoration: none; }
 
 
 /* ======= MENÚ HAMBURGUESA (móvil) ======= */
+@media (max-width: 768px) {
+  .mnav-panel {
+    background: #181818 !important;
+    border-radius: 18px 0 0 18px !important;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.18) !important;
+    padding: 18px 16px 14px 16px !important;
+    animation: mnavFadeIn .28s cubic-bezier(.2,.8,.2,1);
+    min-width: 220px;
+    max-width: 92vw;
+    border-left: 2px solid #222 !important;
+  }
+  @keyframes mnavFadeIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .mnav-list {
+    background: transparent !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 200px !important;
+  }
+  .mnav-link {
+    font-size: 18px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1.1 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    transition: background .18s, color .18s;
+    font-weight: 500 !important;
+    letter-spacing: .1px;
+  }
+  .mnav-link:last-child {
+    border-bottom: none !important;
+  }
+  .mnav-link.active {
+    color: var(--orange) !important;
+    background: rgba(255,122,0,0.08) !important;
+    font-weight: 700 !important;
+  }
+  .mnav-link:hover {
+    background: #232323 !important;
+    color: var(--orange) !important;
+  }
+  .mnav-cta {
+    margin-top: 6px !important;
+    padding: 10px 0 0 0 !important;
+    text-align: center !important;
+  }
+  .mnav-btn {
+    display: inline-block !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    background: var(--orange) !important;
+    color: #181818 !important;
+    padding: 10px 28px !important;
+    box-shadow: 0 2px 8px rgba(255,122,0,0.08) !important;
+    border: none !important;
+    transition: filter .15s, transform .08s;
+  }
+  .mnav-btn:hover {
+    filter: brightness(1.08);
+    transform: translateY(1px);
+  }
+}
+/* Compacta el menú móvil: reduce separación vertical entre palabras */
+@media (max-width: 768px) {
+  .mnav-cta {
+    margin-top: 2px !important;
+    padding-top: 0 !important;
+  }
+}
+@media (max-width: 768px) {
+  .mnav-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .mnav-link {
+    font-size: 18px !important;
+    padding: 2px 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    border-bottom: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+}
 
 /* Botón hamburguesa: oculto en desktop */
 .hdr-burger{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;border:1px solid #2a2a2a;background:#0f0f0f;color:#fff;cursor:pointer}
@@ -120,7 +215,53 @@ a { color: inherit; text-decoration: none; }
 
 /* Links del drawer */
 .drawer-nav{display:flex;flex-direction:column;margin-top:8px}
-.drawer-link{font-size:22px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+@media (max-width: 640px) {
+  .drawer-nav {
+    margin-top: 0 !important;
+    gap: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
+  .drawer-link {
+    padding: 0 !important;
+    font-size: 17px !important;
+    border-bottom: none !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+}
+.drawer-link{font-size:22px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+@media (max-width: 640px) {
+  .drawer-link {
+    padding: 0 !important;
+    font-size: 18px !important;
+    border-bottom: none !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+  }
+  .drawer-nav {
+    gap: 0 !important;
+  }
+}
+@media (max-width: 640px) {
+  .drawer-link {
+    padding: 3px 0 !important;
+    font-size: 20px !important;
+  }
+  .drawer-nav {
+    gap: 0 !important;
+  }
+}
+@media (max-width: 640px) {
+  .drawer-nav {
+    gap: 2px !important;
+  }
+}
 .drawer-cta{display:inline-block;margin-top:14px;text-align:center;padding:12px 18px;font-size:20px;font-weight:600;border-radius:12px;background:var(--orange);color:rgba(0,0,0,.9);border:1px solid rgba(234,88,12,.6);box-shadow:0 2px 0 rgba(0,0,0,.35)}
 
 /* Breakpoint: en móviles escondemos el nav y CTA de la derecha, mostramos hamburguesa */

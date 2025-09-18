@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+// ...existing code...
+import { WHATSAPP_LINK } from "./BestSellers";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,7 +58,7 @@ export default function Header() {
 
         {/* DERECHA: botón Contacto (solo desktop) */}
         <div className="hdr-right">
-          <Link href="#contacto">
+          <Link href={WHATSAPP_LINK} target="_blank" rel="noopener">
             <span className="hdr-btn">Contacto</span>
           </Link>
         </div>
@@ -108,7 +110,7 @@ export default function Header() {
 
           {/* CTA Contacto SOLO dentro del menú móvil */}
           <div className="mnav-cta">
-              <Link href="#contacto" className="mnav-btn mnav-btn-orange">Contacto</Link>
+              <Link href={WHATSAPP_LINK} target="_blank" rel="noopener" className="mnav-btn mnav-btn-orange">Contacto</Link>
           </div>
         </nav>
       </div>

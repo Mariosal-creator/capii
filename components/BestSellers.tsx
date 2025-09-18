@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const WHATSAPP_LINK =
+export const WHATSAPP_LINK =
   "https://wa.me/593982048240?text=Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos!!";
 
 type Item = {
