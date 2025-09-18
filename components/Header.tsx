@@ -93,6 +93,7 @@ export default function Header() {
           <div className="mnav-head">
             <Image src="/logo-capii.png" alt="capii" width={140} height={36} className="hdr-logo" priority />
             <button className="mnav-close" aria-label="Cerrar menú" onClick={() => setOpen(false)}>×</button>
+            <div className="mnav-divider" />
           </div>
 
           <ul className="mnav-list" role="list">
@@ -103,6 +104,7 @@ export default function Header() {
                   <Link href={item.href} className={`mnav-link ${isActive ? "active" : ""}`}>
                     {item.label}
                   </Link>
+                  <div className="mnav-divider" />
                 </li>
               );
             })}
