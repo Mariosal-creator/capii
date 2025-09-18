@@ -1,31 +1,33 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { WHATSAPP_LINK } from "./BestSellers";
 
 export default function Banner() {
   type Slide = { title: string; caption?: string; ctaText?: string; ctaHref?: string; bg: string };
 
   // Slides por defecto (sin imágenes), 100% con tu paleta
+  const whatsappLink = "https://wa.me/0982048240?text=¡Hola! 👋%20Me%20gustaría%20recibir%20información%20profesional%20sobre%20sus%20productos%20y%20servicios%20�️%20¿Podrían%20asesorarme?%20🤝%20Gracias!%20✨";
   const slides: Slide[] = [
     {
       title: "Compra y recibe con capii",
       caption: "Paga cuando lo tengas en tus manos. Rápido, seguro y sin complicaciones.",
-      ctaText: "Explorar",
-      ctaHref: "#productos",
+      ctaText: "Contáctanos",
+  ctaHref: WHATSAPP_LINK,
       bg: "bg-1",
     },
     {
       title: "Envíos ágiles y seguimiento",
       caption: "Transparencia total en cada etapa y soporte cuando lo necesites.",
-      ctaText: "Saber más",
-      ctaHref: "#somos",
+      ctaText: "Contáctanos",
+      ctaHref: WHATSAPP_LINK,
       bg: "bg-2",
     },
     {
       title: "Soluciones para negocios",
       caption: "Planes a medida si quieres vender con capii.",
       ctaText: "Contáctanos",
-  ctaHref: "https://wa.me/593982048240",
+      ctaHref: WHATSAPP_LINK,
       bg: "bg-3",
     },
   ];
@@ -94,9 +96,9 @@ export default function Banner() {
             <div className="content">
               <h2 className="title">{s.title}</h2>
               {s.caption && <p className="caption">{s.caption}</p>}
-              {s.ctaText && s.ctaHref && (
-                <a href={s.ctaHref} className="cta">{s.ctaText}</a>
-              )}
+        {s.ctaText && s.ctaHref && (
+          <a href={s.ctaHref} className="cta" target="_blank" rel="noopener">{s.ctaText}</a>
+        )}
             </div>
           </div>
         ))}

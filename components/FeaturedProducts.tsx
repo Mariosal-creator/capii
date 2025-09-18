@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+const WHATSAPP_LINK = "https://wa.me/0982048240?text=¡Hola! 👋%20Estoy%20interesado%20en%20más%20información%20sobre%20sus%20productos%20🛒%20¿Me%20puedes%20ayudar?%20✨";
 
 type Product = { name: string; price: number; img: string; href?: string };
 
@@ -134,8 +135,8 @@ export default function FeaturedProducts() {
                     <div className="info">
                       <h3 className="name">{p.name}</h3>
                       <div className="price">{fmt.format(p.price)}</div>
-                      <a href={p.href || "#"} className="btn" aria-label={`Comprar ${p.name}`}>
-                        Comprar
+                      <a href={WHATSAPP_LINK} target="_blank" rel="noopener" className="btn" aria-label={`Contactar por WhatsApp sobre ${p.name}`}>
+                        Contactar
                       </a>
                     </div>
                   </article>

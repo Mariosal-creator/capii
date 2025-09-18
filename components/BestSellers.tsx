@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export const WHATSAPP_LINK =
-  "https://wa.me/593982048240?text=Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos!!";
+  "https://wa.me/593982048240?text=¡Hola! 👋%20Me%20gustaría%20recibir%20información%20profesional%20sobre%20sus%20productos%20y%20servicios%20🛍️%20¿Podrían%20asesorarme?%20🤝%20Gracias!%20✨";
 
 type Item = {
   title: string;

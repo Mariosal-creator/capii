@@ -72,7 +72,7 @@ export default function Footer() {
             <h4 className="ftr-title">Contacto</h4>
             <ul className="ftr-list">
               <li><a href="mailto:hola@capii.ec">hola@capii.ec</a></li>
-              <li><a href="https://wa.me/593982048240" target="_blank">WhatsApp</a></li>
+              <li><a href="https://wa.me/0982048240?text=¡Hola! 👋%20Me%20gustaría%20recibir%20información%20profesional%20sobre%20sus%20productos%20y%20servicios%20🛍️%20¿Podrían%20asesorarme?%20🤝%20Gracias!%20✨" target="_blank">WhatsApp</a></li>
               <li><span className="ftr-text">Ecuador</span></li>
             </ul>
           </div>
