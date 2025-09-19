@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { WHATSAPP_LINK } from "./BestSellers";
+import BannerAudioPlayer from "./BannerAudioPlayer";
 
 export default function Banner() {
   type Slide = { title: string; caption?: string; ctaText?: string; ctaHref?: string; bg: string };
@@ -96,13 +97,33 @@ export default function Banner() {
             <div className="content">
               <h2 className="title">{s.title}</h2>
               {s.caption && <p className="caption">{s.caption}</p>}
-        {s.ctaText && s.ctaHref && (
-          <a href={s.ctaHref} className="cta" target="_blank" rel="noopener">{s.ctaText}</a>
-        )}
+              {s.ctaText && s.ctaHref && (
+                <a href={s.ctaHref} className="cta" target="_blank" rel="noopener">{s.ctaText}</a>
+              )}
             </div>
           </div>
         ))}
       </div>
+      {/* Reproductor de audio animado: fuera del slide para que siempre se vea */}
+      {/* Los botones de flecha y el reproductor van antes de los círculos */}
+      {slides.length > 1 && (
+        <>
+          <button className="arrow left" aria-label="Anterior" onClick={prev}>‹</button>
+          <button className="arrow right" aria-label="Siguiente" onClick={next}>›</button>
+          <div className="dots" role="tablist" aria-label="Indicadores del carrusel">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Ir al slide ${i + 1}`}
+                className={`dot ${i === index ? "active" : ""}`}
+                onClick={() => goTo(i)}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {slides.length > 1 && (
         <>
